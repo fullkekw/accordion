@@ -6,7 +6,7 @@ import { Accordion, AccordionHeader, AccordionPanel, AccordionWrapper } from './
 
 const Page: React.FC = () => {
   return <div className="p-10 flex flex-col gap-5">
-    <AccordionWrapper>
+    <AccordionWrapper singleActive>
 
       <Accordion>
         <AccordionHeader>
@@ -24,6 +24,26 @@ const Page: React.FC = () => {
           Laborum veritatis in rem ducimus sunt asperiores a provident error minima eos delectus perferendis nulla illo, consectetur molestias nisi libero. Reiciendis provident numquam quisquam ipsam doloremque quidem recusandae nostrum est?
           Odio deserunt corporis, magnam commodi a id rerum animi explicabo dolores dignissimos, vitae voluptatum soluta? Exercitationem, autem adipisci. Non officiis molestias magni eligendi, repudiandae odit nam nisi amet quisquam aut.
           Incidunt asperiores voluptatum obcaecati inventore porro velit magnam suscipit officia omnis, ratione totam qui harum sapiente nostrum optio fugit aspernatur quos quidem! Earum praesentium harum dicta libero reiciendis culpa dignissimos!
+        </AccordionPanel>
+      </Accordion>
+
+      <Accordion>
+        <AccordionHeader>
+          header 2
+        </AccordionHeader>
+
+        <AccordionPanel>
+          panel 2
+        </AccordionPanel>
+      </Accordion>
+
+      <Accordion>
+        <AccordionHeader>
+          header 3
+        </AccordionHeader>
+
+        <AccordionPanel>
+          panel 3
         </AccordionPanel>
       </Accordion>
 

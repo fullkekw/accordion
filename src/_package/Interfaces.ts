@@ -6,7 +6,7 @@ interface IAccordionSharedProps {
   /**
      * Whether only one accordion can be active per time. If one accordion will be opened, others will be closed
      */
-  singleOpen?: boolean
+  singleActive?: boolean
 
   /**
    * Whether component should be without styling
@@ -17,7 +17,8 @@ interface IAccordionSharedProps {
 }
 
 export interface IAccordionWrapperContext extends Required<IAccordionSharedProps> {
-
+  resetActiveStateFlag: string
+  resetActiveStates(initiator: string): void
 }
 
 export interface IAccordionContext {

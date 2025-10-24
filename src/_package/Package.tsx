@@ -1,6 +1,6 @@
 import './styles.scss';
 
-import { createContext, FC, useContext, useEffect, useId, useRef } from 'react';
+import { createContext, FC, useContext, useEffect, useId, useRef, useState } from 'react';
 import cn from 'classnames';
 
 import { IAccordionContext, IAccordionHeaderProps, IAccordionPanelProps, IAccordionProps, IAccordionWrapperContext, IAccordionWrapperProps } from './Interfaces';
@@ -29,10 +29,22 @@ const AccordionContext = createContext<IAccordionContext>();
 /** 
  * Accordion group context provider
  */
-export const AccordionWrapper: FC<IAccordionWrapperProps> = ({ singleOpen, headless, children }) => {
+export const AccordionWrapper: FC<IAccordionWrapperProps> = ({ singleActive: singleOpen, headless, children }) => {
+  const [resetActiveStateFlag, setResetActiveStateFlag] = useState('');
+
+
+
+  function resetActiveStates(initiator: string) {
+    setResetActiveStateFlag(initiator);
+  }
+
+
+
   return <AccordionWrapperContext.Provider value={{
-    singleOpen: singleOpen ?? false,
-    headless: headless ?? false
+    singleActive: singleOpen ?? false,
+    headless: headless ?? false,
+    resetActiveStateFlag,
+    resetActiveStates,
   }}>
     {children}
   </AccordionWrapperContext.Provider>;
@@ -88,8 +100,6 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
     }, 1);
   }, []);
 
-
-
   // Handle isActive
   useEffect(() => {
     const item = itemRef.current as HTMLDivElement;
@@ -100,25 +110,25 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 
     if (isActive) {
       panel.style.padding = `${paddings[1]}px ${paddings[0]}px`;
-      recalcPanelHeight();
+      panel.style.maxHeight = `${Math.round(paddings[1] * 2) + panel.scrollHeight}px`;
     } else {
       panel.style.padding = `0px ${paddings[0]}px`;
       panel.style.maxHeight = '0';
     }
   }, [isActive]);
 
+  // Handle reset active state
+  useEffect(() => {
+    if (ctx.resetActiveStateFlag !== id) setIsActive(false);
+  }, [ctx.resetActiveStateFlag]);
+
 
 
   function toggle(to?: boolean) {
+    // Reset states
+    if (ctx.singleActive) ctx.resetActiveStates(id);
+
     setIsActive(prev => to ?? !prev);
-  }
-
-  function recalcPanelHeight() {
-    const item = itemRef.current as HTMLDivElement;
-    const panel = item.querySelector('.fkw-accordion-panel') as HTMLDivElement;
-    const paddings = paddingsRef.current;
-
-    panel.style.maxHeight = `${Math.round(paddings[1] * 2) + panel.scrollHeight}px`;
   }
 
 
