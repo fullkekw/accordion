@@ -5,8 +5,16 @@
 
   &-panel {
     width: 100%;
-    overflow: hidden;
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
+
+    &_inner {
+      overflow: hidden;
+    }
+
+    &--active {
+      grid-template-rows: 1fr;
+    }
   }
 
   &-header {

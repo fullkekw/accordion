@@ -112,10 +112,8 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 
     if (isActive) {
       panel.style.padding = `${paddings[1]}px ${paddings[0]}px`;
-      panel.style.maxHeight = `${Math.round(paddings[1] * 2) + panel.scrollHeight}px`;
     } else {
       panel.style.padding = `0px ${paddings[0]}px`;
-      panel.style.maxHeight = '0';
     }
   }, [isActive]);
 
@@ -177,7 +175,9 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className
 export const AccordionPanel: FC<IAccordionPanelProps> = ({ children, className, ...props }) => {
   const ctx = useContext(AccordionContext);
 
-  return <div className={cn(`fkw-accordion-panel`, className)} id={`fkw-accordion-panel-${ctx.id}`} role="region" aria-hidden={ctx.isActive} aria-labelledby={`fkw-accordion-${ctx.id}`} tabIndex={0} {...props}>
-    {children}
+  return <div className={cn(`fkw-accordion-panel`, ctx.isActive && 'fkw-accordion-panel--active', className)} id={`fkw-accordion-panel-${ctx.id}`} role="region" aria-hidden={ctx.isActive} aria-labelledby={`fkw-accordion-${ctx.id}`} tabIndex={0} {...props}>
+    <div className="fkw-accordion-panel_inner">
+      {children}
+    </div>
   </div>;
 };
