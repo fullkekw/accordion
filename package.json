@@ -1,0 +1,61 @@
+{
+  "name": "__PACKAGE_NAME",
+  "version": "0.0.0",
+  "description": "__PACKAGE_DESCRIPTION",
+  "keywords": [],
+  "license": "MIT",
+  "author": "unniiiverse (https://github.com/unniiiverse)",
+  "type": "module",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/_package/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/_package/index.d.ts",
+        "default": "./dist/index.es.js"
+      },
+      "require": {
+        "types": "./dist/_package/index.d.ts",
+        "default": "./dist/index.umd.js"
+      }
+    },
+    "./css": "./dist/styles.css"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "dev": "npx eslint . --fix --ext .ts,.tsx && npx vite",
+    "build": "npx rimraf dist && npx tsc && npx vite build",
+    "husky": "npx tsc && npx vite build && git add ."
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@tailwindcss/vite": "^4.1.16",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "clsx": "^2.1.1",
+    "eslint": "^9.32.0",
+    "eslint-plugin-path": "^2.0.3",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "rimraf": "^6.0.1",
+    "sass": "^1.90.0",
+    "tailwindcss": "^4.1.16",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.0",
+    "vite": "^7.1.0",
+    "vite-plugin-dts": "^4.5.4"
+  }
+}

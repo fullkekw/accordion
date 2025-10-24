@@ -1,0 +1,57 @@
+// ==================
+// RESET & FIX STYLES
+// ==================
+
+html {
+  scroll-behavior: smooth;
+}
+
+// Fix IOS overscroll
+html,
+body {
+  overscroll-behavior: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  position: relative;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+
+  // Fix IOS image border radius
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* For Safari */
+  mask-image: radial-gradient(white, black); /* Standard syntax */
+}
+
+// Remove outline
+input,
+button,
+select {
+  outline: none;
+  border: none;
+}
+
+// Remove default background
+button,
+select {
+  background: transparent;
+}
+
+// Prevent user from selecting button content
+button,
+select,
+[role="button"] {
+  user-select: none;
+
+  * {
+    user-select: none;
+  }
+}
+
+// Hide IOS video play button
+*::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
