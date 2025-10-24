@@ -1,0 +1,45 @@
+.fkw-accordion {
+  &--disabled {
+    cursor: not-allowed;
+  }
+
+  &-panel {
+    width: 100%;
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  &-header {
+    width: 100%;
+    cursor: pointer;
+
+    &,
+    * {
+      user-select: none;
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Styles for non-headless version
+.fkw-accordion--styled {
+  width: 500px;
+
+  .fkw-accordion {
+    // Own item styles defined above
+
+    &-panel {
+      background: #eee;
+      padding: 10px 20px;
+      transition: 0.2s ease-in-out;
+    }
+
+    &-header {
+      background: #e5e5e5;
+      padding: 10px 20px;
+    }
+  }
+}

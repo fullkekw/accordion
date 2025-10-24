@@ -1,1 +1,1 @@
-// export * as default from './Package';
+export { Accordion, AccordionHeader, AccordionPanel, AccordionWrapper } from './Package';
