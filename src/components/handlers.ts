@@ -1,6 +1,6 @@
 export class EFKW extends Error {
   constructor(msg: string) {
-    super(`[__PACKAGE_NAME]: ${msg}`);
+    super(`[@fullkekw/accordion]: ${msg}`);
   }
 }
 

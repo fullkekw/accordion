@@ -1,2 +1,2 @@
-# __PACKAGE_NAME
-__PACKAGE_DESCRIPTION
+# @fullkekw/accordion
+accordion
