@@ -47,7 +47,7 @@ const Page: React.FC = () => {
         </AccordionPanel>
       </Accordion>
 
-      <Accordion disabled>
+      <Accordion disabled isActive>
         <AccordionHeader>
           header disabled
         </AccordionHeader>

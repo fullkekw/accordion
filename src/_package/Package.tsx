@@ -151,19 +151,20 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 /** 
  * Accordion header (button)
  */
-export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children }) => {
+export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className, onClick, ...props }) => {
   const ctx = useContext(AccordionContext);
 
 
 
-  function toggle() {
-    // TODO: handle onclick
+  function toggle(e: React.MouseEvent<HTMLButtonElement>) {
+    if (onClick) onClick(e);
+
     ctx.toggle();
   }
 
 
 
-  return <button className={cn(`fkw-accordion-header`, ctx.isActive && 'fkw-accordion-header--active', ctx.disabled && 'fkw-accordion-header--disabled')} onClick={toggle} tabIndex={0} disabled={ctx.disabled} id={`fkw-accordion-header-${ctx.id}`} aria-controls={`fkw-accordion-panel-${ctx.id}`}>
+  return <button className={cn(`fkw-accordion-header`, ctx.isActive && 'fkw-accordion-header--active', ctx.disabled && 'fkw-accordion-header--disabled', className)} onClick={toggle} tabIndex={0} disabled={ctx.disabled} id={`fkw-accordion-header-${ctx.id}`} aria-controls={`fkw-accordion-panel-${ctx.id}`} {...props}>
     {children}
   </button>;
 };
@@ -173,10 +174,10 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children }) => {
 /** 
  * Accordion content
  */
-export const AccordionPanel: FC<IAccordionPanelProps> = ({ children }) => {
+export const AccordionPanel: FC<IAccordionPanelProps> = ({ children, className, ...props }) => {
   const ctx = useContext(AccordionContext);
 
-  return <div className={cn(`fkw-accordion-panel`)} id={`fkw-accordion-panel-${ctx.id}`} role="region" aria-hidden={ctx.isActive} aria-labelledby={`fkw-accordion-${ctx.id}`} tabIndex={0} >
+  return <div className={cn(`fkw-accordion-panel`, className)} id={`fkw-accordion-panel-${ctx.id}`} role="region" aria-hidden={ctx.isActive} aria-labelledby={`fkw-accordion-${ctx.id}`} tabIndex={0} {...props}>
     {children}
   </div>;
 };

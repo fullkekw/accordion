@@ -35,7 +35,7 @@ export interface IAccordionWrapperProps extends IAccordionSharedProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
-export interface IAccordionProps {
+export interface IAccordionProps extends React.DetailsHTMLAttributes<HTMLDivElement> {
   children: React.ReactNode | React.ReactNode[]
 
   disabled?: boolean
@@ -44,10 +44,10 @@ export interface IAccordionProps {
   setIsActive?: StateSetter<boolean>
 }
 
-export interface IAccordionPanelProps {
+export interface IAccordionHeaderProps extends React.DetailsHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode | React.ReactNode[]
 }
 
-export interface IAccordionHeaderProps {
+export interface IAccordionPanelProps extends React.DetailsHTMLAttributes<HTMLDivElement> {
   children: React.ReactNode | React.ReactNode[]
 }
