@@ -22,6 +22,7 @@ export interface IAccordionWrapperContext extends Required<IAccordionSharedProps
 }
 
 export interface IAccordionContext {
+  id: string
   disabled: boolean
   isActive: boolean
 
