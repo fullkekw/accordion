@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { StateSetter } from './Interfaces';
+import { StateSetter } from '../_package/Interfaces';
 
 
 

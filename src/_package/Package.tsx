@@ -4,7 +4,8 @@ import { createContext, FC, useContext, useEffect, useId, useRef, useState } fro
 import cn from 'classnames';
 
 import { IAccordionContext, IAccordionHeaderProps, IAccordionPanelProps, IAccordionProps, IAccordionWrapperContext, IAccordionWrapperProps } from './Interfaces';
-import { useMixedState } from './useMixedState';
+
+import { useMixedState } from '../components/useMixedState';
 
 
 
