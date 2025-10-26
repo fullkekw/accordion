@@ -27,6 +27,12 @@ export interface IAccordionContext {
   isActive: boolean
 
   toggle(): void
+
+  headerId: string
+  setHeaderId: StateSetter<string>
+
+  panelId: string
+  setPanelId: StateSetter<string>
 }
 
 

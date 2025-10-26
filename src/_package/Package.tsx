@@ -58,11 +58,14 @@ export const AccordionWrapper: FC<IAccordionWrapperProps> = ({ singleActive: sin
  * 
  * @requires AccordionHeader, AccordionPanel to be provided 
  */
-export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sisa, children, disabled }) => {
+export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sisa, children, disabled, id: initialId }) => {
   const ctx = useContext(AccordionWrapperContext);
-  const id = useId();
+  const systemId = useId();
+  const id = initialId ?? `fkw-accordion--${systemId}`;
 
   const [isActive, setIsActive] = useMixedState<boolean>(false, isa, sisa);
+  const [headerId, setHeaderId] = useState(`fkw-accordion-header--${id}`);
+  const [panelId, setPanelId] = useState(`fkw-accordion-panel--${id}`);
 
   const paddingsRef = useRef([0, 0]); // X, Y
   const itemRef = useRef<HTMLDivElement>(null);
@@ -137,9 +140,15 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
     id,
     isActive,
     toggle,
-    disabled: disabled ?? false
+    disabled: disabled ?? false,
+
+    headerId,
+    setHeaderId,
+
+    panelId,
+    setPanelId,
   }}>
-    <div className={cn(`fkw-accordion`, isActive && 'fkw-accordion--active', disabled && 'fkw-accordion--disabled', !ctx.headless && 'fkw-accordion--styled')} ref={itemRef} id={`fkw-accordion-${id}`}>
+    <div className={cn(`fkw-accordion`, isActive && 'fkw-accordion--active', disabled && 'fkw-accordion--disabled', !ctx.headless && 'fkw-accordion--styled')} ref={itemRef} id={id}>
       {children}
     </div>
   </AccordionContext.Provider>;
@@ -155,6 +164,14 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className
 
 
 
+  useEffect(() => {
+    if (!props.id) return;
+
+    ctx.setHeaderId(props.id);
+  }, [props.id]);
+
+
+
   function toggle(e: React.MouseEvent<HTMLButtonElement>) {
     if (onClick) onClick(e);
 
@@ -163,7 +180,7 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className
 
 
 
-  return <button className={cn(`fkw-accordion-header`, ctx.isActive && 'fkw-accordion-header--active', ctx.disabled && 'fkw-accordion-header--disabled', className)} onClick={toggle} tabIndex={0} disabled={ctx.disabled} id={`fkw-accordion-header-${ctx.id}`} aria-controls={`fkw-accordion-panel-${ctx.id}`} {...props}>
+  return <button className={cn(`fkw-accordion-header`, ctx.isActive && 'fkw-accordion-header--active', ctx.disabled && 'fkw-accordion-header--disabled', className)} onClick={toggle} tabIndex={0} disabled={ctx.disabled} id={ctx.headerId} aria-controls={ctx.panelId} {...props}>
     {children}
   </button>;
 };
@@ -176,7 +193,17 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className
 export const AccordionPanel: FC<IAccordionPanelProps> = ({ children, className, ...props }) => {
   const ctx = useContext(AccordionContext);
 
-  return <div className={cn(`fkw-accordion-panel`, ctx.isActive && 'fkw-accordion-panel--active', className)} id={`fkw-accordion-panel-${ctx.id}`} role="region" aria-hidden={ctx.isActive} aria-labelledby={`fkw-accordion-${ctx.id}`} tabIndex={0} {...props}>
+
+
+  useEffect(() => {
+    if (!props.id) return;
+
+    ctx.setPanelId(props.id);
+  }, [props.id]);
+
+
+
+  return <div className={cn(`fkw-accordion-panel`, ctx.isActive && 'fkw-accordion-panel--active', className)} id={ctx.panelId} role="region" aria-hidden={ctx.isActive} aria-labelledby={ctx.id} tabIndex={0} {...props}>
     <div className="fkw-accordion-panel_inner">
       {children}
     </div>
