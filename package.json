@@ -1,6 +1,6 @@
 {
   "name": "@fullkekw/accordion",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Headless accordion component for React, with built-in typescript types!",
   "keywords": [
     "fkw",
