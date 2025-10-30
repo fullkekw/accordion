@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Accordion, AccordionHeader, AccordionPanel, AccordionWrapper } from './_package/index';
 
 
 
 const Page: React.FC = () => {
+  const [is2Active, setIs2Active] = useState(true);
+
+
   return <div className="p-10 flex flex-col gap-5">
     <AccordionWrapper singleActive>
 
@@ -27,7 +30,7 @@ const Page: React.FC = () => {
         </AccordionPanel>
       </Accordion>
 
-      <Accordion>
+      <Accordion isActive={is2Active} setIsActive={setIs2Active}>
         <AccordionHeader>
           header 2
         </AccordionHeader>

@@ -1,6 +1,6 @@
 {
   "name": "@fullkekw/accordion",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Headless accordion component for React, with built-in typescript types!",
   "keywords": [
     "fkw",
@@ -35,7 +35,7 @@
   "scripts": {
     "dev": "npx eslint . --fix --ext .ts,.tsx && npx vite",
     "build": "npx rimraf dist && npx tsc && npx vite build",
-    "husky": "npx tsc && npx vite build && git add ."
+    "husky": "npm run build && git add ."
   },
   "publishConfig": {
     "access": "public"

@@ -123,7 +123,7 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 
   // Handle reset active state
   useEffect(() => {
-    if (ctx.resetActiveStateFlag !== id) setIsActive(false);
+    if (ctx.resetActiveStateFlag.length && ctx.resetActiveStateFlag !== id) setIsActive(false);
   }, [ctx.resetActiveStateFlag]);
 
 
