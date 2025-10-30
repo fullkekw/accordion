@@ -58,16 +58,15 @@ export const AccordionWrapper: FC<IAccordionWrapperProps> = ({ singleActive: sin
  * 
  * @requires AccordionHeader, AccordionPanel to be provided 
  */
-export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sisa, children, disabled, id: initialId, ...p }) => {
+export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sisa, children, disabled, id: initialId, isInitialActive, ...p }) => {
   const ctx = useContext(AccordionWrapperContext);
   const systemId = useId();
   const id = initialId ?? `fkw-accordion--${systemId}`;
 
-  const [isActive, setIsActive] = useMixedState<boolean>(false, isa, sisa);
+  const [isActive, setIsActive] = useMixedState<boolean>(isInitialActive ?? false, isa, sisa);
   const [headerId, setHeaderId] = useState(`fkw-accordion-header--${id}`);
   const [panelId, setPanelId] = useState(`fkw-accordion-panel--${id}`);
 
-  const paddingsRef = useRef([0, 0]); // X, Y
   const itemRef = useRef<HTMLDivElement>(null);
 
 
@@ -91,18 +90,11 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 
     const panel = item.querySelector('.fkw-accordion-panel') as HTMLDivElement;
 
-    const paddings = window.getComputedStyle(panel).padding;
-    const transition = window.getComputedStyle(panel).transition;
-
-    const paddingX = Number(paddings.split(' ')[1]?.replace('px', '') ?? '0');
-    const paddingY = Number(paddings.split(' ')[0]?.replace('px', '') ?? '0');
-
-    paddingsRef.current = [paddingX, paddingY];
-
+    // Prevent initial padding remove transition 
     panel.style.transition = 'none';
 
     setTimeout(() => {
-      panel.style.transition = transition;
+      panel.style.transition = '';
     }, 1);
   }, []);
 
@@ -110,14 +102,15 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
   useEffect(() => {
     const item = itemRef.current as HTMLDivElement;
     const panel = item.querySelector('.fkw-accordion-panel') as HTMLDivElement;
-    const paddings = paddingsRef.current;
 
 
 
     if (isActive) {
-      panel.style.padding = `${paddings[1]}px ${paddings[0]}px`;
+      panel.style.paddingTop = ``;
+      panel.style.paddingBottom = ``;
     } else {
-      panel.style.padding = `0px ${paddings[0]}px`;
+      panel.style.paddingTop = `0`;
+      panel.style.paddingBottom = `0`;
     }
   }, [isActive]);
 
@@ -134,6 +127,7 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 
     setIsActive(prev => to ?? !prev);
   }
+
 
 
   return <AccordionContext.Provider value={{
