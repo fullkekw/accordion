@@ -8,12 +8,12 @@ const Page: React.FC = () => {
   return <div className="p-10 flex flex-col gap-5">
     <AccordionWrapper singleActive>
 
-      <Accordion>
-        <AccordionHeader>
+      <Accordion id="acc-1">
+        <AccordionHeader id="acc-header-1">
           header
         </AccordionHeader>
 
-        <AccordionPanel>
+        <AccordionPanel id="acc-panel-1">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo quo, quidem placeat saepe atque eveniet esse ea aspernatur accusamus! Quos natus dolore itaque eum fugiat debitis iste id voluptate assumenda!
           Assumenda reiciendis error natus iste dolore cupiditate totam impedit. Quos saepe nemo et ipsam dolores perferendis, deleniti eos consequatur, eius minima aut? Eum iste animi officia eaque consequuntur, sunt pariatur.
           Saepe odit explicabo distinctio sed incidunt ea alias quae quaerat id assumenda! Corporis aperiam mollitia exercitationem ullam cupiditate eveniet et omnis a nulla hic reprehenderit similique, ut quisquam voluptatem aliquam!
@@ -27,7 +27,7 @@ const Page: React.FC = () => {
         </AccordionPanel>
       </Accordion>
 
-      <Accordion>
+      <Accordion isInitialActive>
         <AccordionHeader>
           header 2
         </AccordionHeader>

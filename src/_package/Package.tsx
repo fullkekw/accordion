@@ -58,13 +58,15 @@ export const AccordionWrapper: FC<IAccordionWrapperProps> = ({ singleActive: sin
  * 
  * @requires AccordionHeader, AccordionPanel to be provided 
  */
-export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sisa, children, disabled }) => {
+export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sisa, children, disabled, id: initialId, isInitialActive, ...p }) => {
   const ctx = useContext(AccordionWrapperContext);
-  const id = useId();
+  const systemId = useId();
+  const id = initialId ?? `fkw-accordion--${systemId}`;
 
-  const [isActive, setIsActive] = useMixedState<boolean>(false, isa, sisa);
+  const [isActive, setIsActive] = useMixedState<boolean>(isInitialActive ?? false, isa, sisa);
+  const [headerId, setHeaderId] = useState(`fkw-accordion-header--${id}`);
+  const [panelId, setPanelId] = useState(`fkw-accordion-panel--${id}`);
 
-  const paddingsRef = useRef([0, 0]); // X, Y
   const itemRef = useRef<HTMLDivElement>(null);
 
 
@@ -88,18 +90,11 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 
     const panel = item.querySelector('.fkw-accordion-panel') as HTMLDivElement;
 
-    const paddings = window.getComputedStyle(panel).padding;
-    const transition = window.getComputedStyle(panel).transition;
-
-    const paddingX = Number(paddings.split(' ')[1]?.replace('px', '') ?? '0');
-    const paddingY = Number(paddings.split(' ')[0]?.replace('px', '') ?? '0');
-
-    paddingsRef.current = [paddingX, paddingY];
-
+    // Prevent initial padding remove transition 
     panel.style.transition = 'none';
 
     setTimeout(() => {
-      panel.style.transition = transition;
+      panel.style.transition = '';
     }, 1);
   }, []);
 
@@ -107,20 +102,21 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
   useEffect(() => {
     const item = itemRef.current as HTMLDivElement;
     const panel = item.querySelector('.fkw-accordion-panel') as HTMLDivElement;
-    const paddings = paddingsRef.current;
 
 
 
     if (isActive) {
-      panel.style.padding = `${paddings[1]}px ${paddings[0]}px`;
+      panel.style.paddingTop = ``;
+      panel.style.paddingBottom = ``;
     } else {
-      panel.style.padding = `0px ${paddings[0]}px`;
+      panel.style.paddingTop = `0`;
+      panel.style.paddingBottom = `0`;
     }
   }, [isActive]);
 
   // Handle reset active state
   useEffect(() => {
-    if (ctx.resetActiveStateFlag !== id) setIsActive(false);
+    if (ctx.resetActiveStateFlag.length && ctx.resetActiveStateFlag !== id) setIsActive(false);
   }, [ctx.resetActiveStateFlag]);
 
 
@@ -133,13 +129,20 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
   }
 
 
+
   return <AccordionContext.Provider value={{
     id,
     isActive,
     toggle,
-    disabled: disabled ?? false
+    disabled: disabled ?? false,
+
+    headerId,
+    setHeaderId,
+
+    panelId,
+    setPanelId,
   }}>
-    <div className={cn(`fkw-accordion`, isActive && 'fkw-accordion--active', disabled && 'fkw-accordion--disabled', !ctx.headless && 'fkw-accordion--styled')} ref={itemRef} id={`fkw-accordion-${id}`}>
+    <div className={cn(`fkw-accordion`, isActive && 'fkw-accordion--active', disabled && 'fkw-accordion--disabled', !ctx.headless && 'fkw-accordion--styled', p.className)} ref={itemRef} id={id} {...p}>
       {children}
     </div>
   </AccordionContext.Provider>;
@@ -150,8 +153,16 @@ export const Accordion: FC<IAccordionProps> = ({ isActive: isa, setIsActive: sis
 /** 
  * Accordion header (button)
  */
-export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className, onClick, ...props }) => {
+export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className, onClick, ...p }) => {
   const ctx = useContext(AccordionContext);
+
+
+
+  useEffect(() => {
+    if (!p.id) return;
+
+    ctx.setHeaderId(p.id);
+  }, [p.id]);
 
 
 
@@ -163,7 +174,7 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className
 
 
 
-  return <button className={cn(`fkw-accordion-header`, ctx.isActive && 'fkw-accordion-header--active', ctx.disabled && 'fkw-accordion-header--disabled', className)} onClick={toggle} tabIndex={0} disabled={ctx.disabled} id={`fkw-accordion-header-${ctx.id}`} aria-controls={`fkw-accordion-panel-${ctx.id}`} {...props}>
+  return <button className={cn(`fkw-accordion-header`, ctx.isActive && 'fkw-accordion-header--active', ctx.disabled && 'fkw-accordion-header--disabled', className)} onClick={toggle} tabIndex={0} disabled={ctx.disabled} id={ctx.headerId} aria-controls={ctx.panelId} {...p}>
     {children}
   </button>;
 };
@@ -173,10 +184,20 @@ export const AccordionHeader: FC<IAccordionHeaderProps> = ({ children, className
 /** 
  * Accordion content
  */
-export const AccordionPanel: FC<IAccordionPanelProps> = ({ children, className, ...props }) => {
+export const AccordionPanel: FC<IAccordionPanelProps> = ({ children, className, ...p }) => {
   const ctx = useContext(AccordionContext);
 
-  return <div className={cn(`fkw-accordion-panel`, ctx.isActive && 'fkw-accordion-panel--active', className)} id={`fkw-accordion-panel-${ctx.id}`} role="region" aria-hidden={ctx.isActive} aria-labelledby={`fkw-accordion-${ctx.id}`} tabIndex={0} {...props}>
+
+
+  useEffect(() => {
+    if (!p.id) return;
+
+    ctx.setPanelId(p.id);
+  }, [p.id]);
+
+
+
+  return <div className={cn(`fkw-accordion-panel`, ctx.isActive && 'fkw-accordion-panel--active', className)} id={ctx.panelId} role="region" aria-hidden={ctx.isActive} aria-labelledby={ctx.id} tabIndex={0} {...p}>
     <div className="fkw-accordion-panel_inner">
       {children}
     </div>

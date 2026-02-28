@@ -27,6 +27,12 @@ export interface IAccordionContext {
   isActive: boolean
 
   toggle(): void
+
+  headerId: string
+  setHeaderId: StateSetter<string>
+
+  panelId: string
+  setPanelId: StateSetter<string>
 }
 
 
@@ -41,6 +47,7 @@ export interface IAccordionProps extends React.DetailsHTMLAttributes<HTMLDivElem
   children: React.ReactNode | React.ReactNode[]
 
   disabled?: boolean
+  isInitialActive?: boolean
 
   isActive?: boolean
   setIsActive?: StateSetter<boolean>
